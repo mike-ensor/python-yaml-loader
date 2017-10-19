@@ -1,6 +1,7 @@
 import yaml
 import os.path
 import sys
+import re
 
 class Loader(yaml.Loader):
     """YAML Loader with `!include` constructor."""
@@ -38,11 +39,22 @@ if __name__ == '__main__':
         print("Please provide an input YAML file")
         sys.exit(1)
 
-    finalList = []
+    finalOutput = ''
     with open(sys.argv[1], 'r') as f:
-        yamlSegments = yaml.load_all(f, Loader)
-        for segment in yamlSegments:
-            data = yaml.dump(segment)
-            print data
-            finalList.append(segment)
-    print finalList
+        myfiles = yaml.load_all(f, Loader)
+        for file in myfiles:
+            finalOutput += yaml.dump(file, default_flow_style=False) + "---\n"
+            
+    # Remove last ---
+    
+    finalOutput = re.sub('---\n$', '', finalOutput)
+    
+    # Define Outfile path.
+    
+    finalOutputPath = re.sub('\.', '_final.', sys.argv[1])
+    
+    # Output file.
+    
+    text_file = open(finalOutputPath, "w")
+    text_file.write(finalOutput)
+    text_file.close()
