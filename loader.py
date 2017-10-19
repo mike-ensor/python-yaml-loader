@@ -36,8 +36,13 @@ class Loader(yaml.Loader):
 if __name__ == '__main__':
     if len(sys.argv) < 2: 
         print("Please provide an input YAML file")
-        exit
+        sys.exit(1)
 
+    finalList = []
     with open(sys.argv[1], 'r') as f:
-        data = yaml.load(f, Loader)
-    print(data)
+        yamlSegments = yaml.load_all(f, Loader)
+        for segment in yamlSegments:
+            data = yaml.dump(segment)
+            print data
+            finalList.append(segment)
+    print finalList
