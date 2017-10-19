@@ -1,23 +1,14 @@
 import yaml
 import os.path
+import sys
 
-class LoaderMeta(type):
-
-    def __new__(metacls, __name__, __bases__, __dict__):
-        """Add include constructer to class."""
-
-        # register the include constructor on the class
-        cls = super().__new__(metacls, __name__, __bases__, __dict__)
-        cls.add_constructor('!include', cls.construct_include)
-
-        return cls
-
-
-# class Loader(yaml.Loader, metaclass=LoaderMeta):
 class Loader(yaml.Loader):
     """YAML Loader with `!include` constructor."""
 
     def __init__(self, stream):
+	
+        yaml.add_constructor('!include', self.construct_include)
+		
         """Initialise Loader."""
 
         try:
@@ -25,9 +16,9 @@ class Loader(yaml.Loader):
         except AttributeError:
             self._root = os.path.curdir
 
-        super().__init__(stream)
+        super(Loader, self).__init__(stream)
 
-    def construct_include(self, node):
+    def construct_include(self, tag_suffix, node):
         """Include file referenced at node."""
 
         filename = os.path.abspath(os.path.join(
@@ -43,6 +34,10 @@ class Loader(yaml.Loader):
 
 
 if __name__ == '__main__':
-    with open('foo.yaml', 'r') as f:
+    if len(sys.argv) < 2: 
+        print("Please provide an input YAML file")
+        exit
+
+    with open(sys.argv[1], 'r') as f:
         data = yaml.load(f, Loader)
     print(data)
