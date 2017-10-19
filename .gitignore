@@ -1,26 +1,6 @@
-.apt_generated/
 .project
 .classpath
 .settings/
-target/
-build/
-
-
-# front-end 
-**/*.css
-
-# Personal environment.properites files
-environment.properties
-development.properties
-
-intershop-cisetup-sources/**/.gitignore
-
-.gradle/
-
-# Still in question...are these auto generated??
-bin/
-**/out/
-
 
 # Remove Mac files
 .DS_Store
@@ -28,10 +8,8 @@ bin/
 # Remove Microsoft Visual Code
 .vscode/
 
-# Remove write.lock file
-write.lock
 
 # IntelliJ Files
 .idea/
 .metadata/
-herff-jones-intershop-project.iml
+*.iml
