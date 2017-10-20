@@ -13,3 +13,5 @@
 .idea/
 .metadata/
 *.iml
+
+*_final.yaml
