@@ -35,20 +35,29 @@ class Loader(yaml.Loader):
 
 
 def getReplacedYamlFile(lines):
-    for l in lines:
-        line = l.strip("\n")
+    localoutput  = ""
 
-#        volumeMounts: !include configmounts.yaml
-        matchObj = re.match(r'!include\s([\w]+[\.]yaml)', line)
+    for l in lines:
+        line = l
+
+        matchObj = re.search(r'[\s+]!include[\s+]([\w]+[\.]yaml)', line, re.M | re.I)
 
         if matchObj:
-            print "\n\n\n\n::::"
-            print(matchObj.group())
-            print(matchObj.group(1))
-            exit
-        print(line)
+            fileToInclude = matchObj.group(1)
+            includedFileLines = getFileContents(fileToInclude)
+            for includedLine in includedFileLines:
+                localoutput += includedLine
+        else:
+            localoutput += line
 
-    return "new: yaml"
+
+    print(localoutput)
+    return localoutput
+
+
+def getFileContents(fileName):
+    with open(fileName, 'r') as file:
+        return file.readlines()
 
 
 if __name__ == '__main__':
@@ -57,12 +66,11 @@ if __name__ == '__main__':
         sys.exit(1)
 
     finalOutput = ''
-    with open(sys.argv[1], 'r') as f:
-        # myfiles = yaml.load_all(f, Loader)
-        # for file in myfiles:
-        #     finalOutput += yaml.dump(file, default_flow_style=False) + "---\n"
-        newYamlFile = getReplacedYamlFile(f.readlines())
-        print(newYamlFile)
+    # myfiles = yaml.load_all(f, Loader)
+    # for file in myfiles:
+    #     finalOutput += yaml.dump(file, default_flow_style=False) + "---\n"
+    newYamlFile = getReplacedYamlFile(getFileContents(sys.argv[1]))
+    print(newYamlFile)
 
     # Remove last ---
     
