@@ -34,23 +34,46 @@ class Loader(yaml.Loader):
                 return ''.join(f.readlines())
 
 
-def getReplacedYamlFile(lines):
-    localoutput  = ""
+#########################################
 
-    for l in lines:
-        line = l
+def getReplacedYamlFile(lines):
+
+    localoutput = ''
+
+    for line in lines:
 
         matchObj = re.search(r'[\s+]!include[\s+]([\w]+[\.]yaml)', line, re.M | re.I)
 
         if matchObj:
-            fileToInclude = matchObj.group(1)
-            includedFileLines = getFileContents(fileToInclude)
-            for includedLine in includedFileLines:
-                localoutput += includedLine
+            localoutput += addIncludedFile(getSpacesToIndentOnIncludedFile(line), matchObj.group(1))
         else:
             localoutput += line
 
     return localoutput
+
+
+def addIncludedFile(indentSpaces, fileToInclude):
+    """
+    Add the included file reference by !include <filename> at the proper indenting of the included attribute
+    :param line: String line containing
+    :param localoutput:
+    :param matchObj:
+    :return:
+    """
+    output = ''
+
+    for includedLine in getFileContents(fileToInclude):
+        output += indentSpaces + includedLine
+
+    return output
+
+
+def getSpacesToIndentOnIncludedFile(line):
+    spacesToIndent = ''
+    matchGroup = re.match(r'([\s]*).*!include[\s+][\w]+[\.]yaml', line)
+    if matchGroup:
+        spacesToIndent = matchGroup.group(1)
+    return spacesToIndent
 
 
 def getFileContents(fileName):
@@ -63,11 +86,11 @@ if __name__ == '__main__':
         print("Please provide an input YAML file")
         sys.exit(1)
 
-    finalOutput = ''
     finalOutput = getReplacedYamlFile(getFileContents(sys.argv[1]))
 
     yamlOutput = ''
     myfiles = yaml.load_all(finalOutput, Loader)
+
     for file in myfiles:
         yamlOutput += yaml.dump(file, default_flow_style=False) + "---\n"
 

@@ -1,25 +1,25 @@
-        volumeMounts:
-        - mountPath: /mgt/example/adminservice.yml
-          name: example
-          subPath: adminservice.yml
-        - mountPath: /mgt/example/amazon_s3.yml
-          name: example
-          subPath: amazon_s3.yml
-        - mountPath: /mgt/example/bunny.yml
-          name: example
-          subPath: bunny.yml
-        - mountPath: /mgt/example/consumers.yml
-          name: example
-          subPath: consumers.yml
-        - mountPath: /mgt/example/database.yml
-          name: example
-          subPath: database.yml
-        - mountPath: /mgt/example/newrelic.yml
-          name: example
-          subPath: newrelic.yml
-        - mountPath: /mgt/example/service.rb
-          name: example
-          subPath: service.rb
-        - mountPath: /mgt/example/redis.yml
-          name: example
-          subPath: redis.yml
+volumeMounts:
+- mountPath: /mgt/example/adminservice.yml
+  name: example
+  subPath: adminservice.yml
+- mountPath: /mgt/example/amazon_s3.yml
+  name: example
+  subPath: amazon_s3.yml
+- mountPath: /mgt/example/bunny.yml
+  name: example
+  subPath: bunny.yml
+- mountPath: /mgt/example/consumers.yml
+  name: example
+  subPath: consumers.yml
+- mountPath: /mgt/example/database.yml
+  name: example
+  subPath: database.yml
+- mountPath: /mgt/example/newrelic.yml
+  name: example
+  subPath: newrelic.yml
+- mountPath: /mgt/example/service.rb
+  name: example
+  subPath: service.rb
+- mountPath: /mgt/example/redis.yml
+  name: example
+  subPath: redis.yml
