@@ -76,6 +76,7 @@ spec:
         ports:
         - name: example-memcache
           containerPort: 11211
+        volumeMounts: !include sample-files/configmounts.yaml # NOTE:  This is relative to the base python script, not to the file being included
         resources:
           limits:
             cpu: "500m"
