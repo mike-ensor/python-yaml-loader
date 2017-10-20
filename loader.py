@@ -42,7 +42,7 @@ def getReplacedYamlFile(lines):
 
     for line in lines:
 
-        matchObj = re.search(r'[\s+]!include[\s+]([\w]+[\S]*[\.]yaml)', line, re.M | re.I)
+        matchObj = re.search(r'[\s+]!include[\s+]([/\w]+[\S]*[\.]yaml)', line)
 
         if matchObj:
             localoutput += addIncludedFile(getSpacesToIndentOnIncludedFile(line), matchObj.group(1))
@@ -70,7 +70,7 @@ def addIncludedFile(indentSpaces, fileToInclude):
 
 def getSpacesToIndentOnIncludedFile(line):
     spacesToIndent = ''
-    matchGroup = re.match(r'([\s]*).*!include[\s+][\w]+[\S]*[\.]yaml', line)
+    matchGroup = re.match(r'([\s]*).*!include[\s+][/\w]+[\S]*[\.]yaml', line)
     if matchGroup:
         spacesToIndent = matchGroup.group(1)
     return spacesToIndent
