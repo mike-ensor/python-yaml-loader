@@ -1,3 +1,6 @@
+#! /usr/bin/env python
+#coding=utf-8
+
 import yaml
 import os.path
 import sys
@@ -83,7 +86,7 @@ def getFileContents(fileName):
 
 
 if __name__ == '__main__':
-    if len(sys.argv) < 2: 
+    if len(sys.argv) < 2:
         print("Please provide an input YAML file")
         sys.exit(1)
 
@@ -105,7 +108,7 @@ if __name__ == '__main__':
     finalOutputPath = re.sub('\.', '_final.', sys.argv[1])
 
     # Output file.
-    
+
     text_file = open(finalOutputPath, "w")
     text_file.write(finalOutput)
     text_file.close()
