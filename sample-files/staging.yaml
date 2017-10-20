@@ -69,7 +69,7 @@ spec:
           requests:
             cpu: 1
             memory: 2Gi
-        volumeMounts: !include configmounts.yaml
+        volumeMounts: !include sample-files/configmounts.yaml # NOTE:  This is relative to the base python script, not to the file being included
       - name: memcached
         image: memcached:1.5.1
         command: ["/usr/local/bin/memcached", "-m", "1024", "-v"]
