@@ -7,9 +7,9 @@ class Loader(yaml.Loader):
     """YAML Loader with `!include` constructor."""
 
     def __init__(self, stream):
-	
+
         yaml.add_constructor('!include', self.construct_include)
-		
+
         """Initialise Loader."""
 
         try:
@@ -34,17 +34,44 @@ class Loader(yaml.Loader):
                 return ''.join(f.readlines())
 
 
+def getReplacedYamlFile(lines):
+    localoutput  = ""
+
+    for l in lines:
+        line = l
+
+        matchObj = re.search(r'[\s+]!include[\s+]([\w]+[\.]yaml)', line, re.M | re.I)
+
+        if matchObj:
+            fileToInclude = matchObj.group(1)
+            includedFileLines = getFileContents(fileToInclude)
+            for includedLine in includedFileLines:
+                localoutput += includedLine
+        else:
+            localoutput += line
+
+
+    print(localoutput)
+    return localoutput
+
+
+def getFileContents(fileName):
+    with open(fileName, 'r') as file:
+        return file.readlines()
+
+
 if __name__ == '__main__':
     if len(sys.argv) < 2: 
         print("Please provide an input YAML file")
         sys.exit(1)
 
     finalOutput = ''
-    with open(sys.argv[1], 'r') as f:
-        myfiles = yaml.load_all(f, Loader)
-        for file in myfiles:
-            finalOutput += yaml.dump(file, default_flow_style=False) + "---\n"
-            
+    # myfiles = yaml.load_all(f, Loader)
+    # for file in myfiles:
+    #     finalOutput += yaml.dump(file, default_flow_style=False) + "---\n"
+    newYamlFile = getReplacedYamlFile(getFileContents(sys.argv[1]))
+    print(newYamlFile)
+
     # Remove last ---
     
     finalOutput = re.sub('---\n$', '', finalOutput)
