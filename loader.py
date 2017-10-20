@@ -69,17 +69,12 @@ if __name__ == '__main__':
     # myfiles = yaml.load_all(f, Loader)
     # for file in myfiles:
     #     finalOutput += yaml.dump(file, default_flow_style=False) + "---\n"
-    newYamlFile = getReplacedYamlFile(getFileContents(sys.argv[1]))
-    print(newYamlFile)
+    finalOutput = getReplacedYamlFile(getFileContents(sys.argv[1]))
+    myfiles = yaml.load_all(finalOutput, Loader)
 
-    # Remove last ---
-    
-    finalOutput = re.sub('---\n$', '', finalOutput)
-    
     # Define Outfile path.
-    
     finalOutputPath = re.sub('\.', '_final.', sys.argv[1])
-    
+
     # Output file.
     
     text_file = open(finalOutputPath, "w")
