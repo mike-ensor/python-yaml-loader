@@ -50,8 +50,6 @@ def getReplacedYamlFile(lines):
         else:
             localoutput += line
 
-
-    print(localoutput)
     return localoutput
 
 
@@ -66,11 +64,16 @@ if __name__ == '__main__':
         sys.exit(1)
 
     finalOutput = ''
-    # myfiles = yaml.load_all(f, Loader)
-    # for file in myfiles:
-    #     finalOutput += yaml.dump(file, default_flow_style=False) + "---\n"
     finalOutput = getReplacedYamlFile(getFileContents(sys.argv[1]))
+
+    yamlOutput = ''
     myfiles = yaml.load_all(finalOutput, Loader)
+    for file in myfiles:
+        yamlOutput += yaml.dump(file, default_flow_style=False) + "---\n"
+
+    yamlOutput = re.sub('---\n$', '', finalOutput)
+
+    print(yamlOutput)
 
     # Define Outfile path.
     finalOutputPath = re.sub('\.', '_final.', sys.argv[1])
