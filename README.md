@@ -4,9 +4,11 @@ This is a script that replaces segments of a YAML file with another file based o
 
 ## Example
 
+Loader file is a bash script that uses Python 2.7+
+
 ```bash
-# python loader.py <filename>
-python loader.py staging.yaml
+# loader.py <filename>
+loader.py staging.yaml
 ```
 
 ## Output
